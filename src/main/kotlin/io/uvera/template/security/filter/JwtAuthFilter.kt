@@ -1,0 +1,59 @@
+package io.uvera.template.security.filter
+
+import io.uvera.template.security.service.JwtAccessTokenService
+import org.springframework.security.authentication.BadCredentialsException
+import org.springframework.security.authentication.DisabledException
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.security.core.userdetails.UserDetailsService
+import org.springframework.stereotype.Component
+import org.springframework.web.filter.OncePerRequestFilter
+import javax.servlet.FilterChain
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
+
+@Component
+class JwtAuthFilter(
+    private val jwtAccessTokenService: JwtAccessTokenService,
+    private val userDetailsService: UserDetailsService,
+) : OncePerRequestFilter() {
+
+    override fun doFilterInternal(
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        filterChain: FilterChain
+    ) {
+        // if no token found, continue the filter chain
+        val token = request.extractJwtToken() ?: return filterChain.doFilter(request, response)
+        // if token is invalid, throw exception
+        try {
+            if (!jwtAccessTokenService.validateToken(token)) throw BadCredentialsException("INVALID_CREDENTIALS")
+            // extract email otherwise throw exception (previous validation should be covering this, but just in case)
+            val claims =
+                jwtAccessTokenService.getClaimsFromToken(token) ?: throw BadCredentialsException("INVALID_CREDENTIALS")
+            val subject = claims.subject
+            val userDetails: UserDetails =
+                userDetailsService.loadUserByUsername(subject)
+
+            if (!userDetails.isEnabled) throw DisabledException("ACCOUNT_DISABLED")
+
+            val usernameAndPasswordAuthenticationToken = UsernamePasswordAuthenticationToken(
+                userDetails, null, userDetails.authorities
+            )
+            SecurityContextHolder.getContext().authentication = usernameAndPasswordAuthenticationToken
+        } catch (ex: Exception) {
+            request.setAttribute("exception", ex)
+        }
+        filterChain.doFilter(request, response)
+    }
+}
+
+private fun HttpServletRequest.extractJwtToken(): String? {
+    // Return null if authorization header is null
+    val authorizationHeader: String = this.getHeader("Authorization") ?: return null
+    // We need to check if header is in Bearer {token} form
+    return if (authorizationHeader.startsWith("Bearer ")) {
+        authorizationHeader.substring(7, authorizationHeader.length)
+    } else null
+}

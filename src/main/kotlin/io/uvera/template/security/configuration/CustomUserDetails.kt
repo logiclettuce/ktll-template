@@ -1,0 +1,30 @@
+package io.uvera.template.security.configuration
+
+import io.uvera.template.model.User
+import io.uvera.template.model.UserRole
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
+import org.springframework.security.core.userdetails.UserDetails
+
+class CustomUserDetails(user: User) : UserDetails {
+    private val email: String = user.email
+    private val password: String = user.password
+    private val active = user.active
+    private val authorities: MutableList<GrantedAuthority> = user.roleList
+        .map { role -> SimpleGrantedAuthority("${UserRole.ROLE_PREFIX_VALUE}$role") }
+        .toMutableList()
+
+    override fun getUsername(): String = this.email
+
+    override fun getAuthorities(): MutableCollection<out GrantedAuthority> = this.authorities
+
+    override fun getPassword(): String = this.password
+
+    override fun isAccountNonExpired(): Boolean = true
+
+    override fun isAccountNonLocked(): Boolean = true
+
+    override fun isCredentialsNonExpired(): Boolean = true
+
+    override fun isEnabled(): Boolean = active
+}

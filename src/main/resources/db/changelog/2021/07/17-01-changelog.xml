@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1626547165836-1" author="dusan (generated)">
+        <createTable tableName="users">
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_users"/>
+            </column>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="active" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1626547165836-2" author="dusan (generated)">
+        <createTable tableName="users_roles">
+            <column name="user_email" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role" type="VARCHAR"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1626547165836-3" author="dusan (generated)">
+        <addForeignKeyConstraint baseColumnNames="user_email" baseTableName="users_roles"
+                                 constraintName="fk_users_roles_on_user" referencedColumnNames="email"
+                                 referencedTableName="users"/>
+    </changeSet>
+
+</databaseChangeLog>

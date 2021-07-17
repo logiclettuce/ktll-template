@@ -1,0 +1,58 @@
+package io.uvera.template.service
+
+import io.uvera.template.dto.auth.TokenResponseDTO
+import io.uvera.template.dto.auth.WhoAmIDTO
+import io.uvera.template.error.exception.UserNotFoundException
+import io.uvera.template.security.service.JwtAccessTokenService
+import io.uvera.template.security.service.JwtRefreshTokenService
+import org.springframework.security.authentication.BadCredentialsException
+import org.springframework.security.authentication.DisabledException
+import org.springframework.security.core.userdetails.UserDetailsService
+import org.springframework.stereotype.Service
+
+@Service
+class AuthService(
+    private val jwtAccessTokenService: JwtAccessTokenService,
+    private val jwtRefreshTokenService: JwtRefreshTokenService,
+    private val userDetailsService: UserDetailsService,
+    private val userService: UserCachingService,
+) {
+    fun whoAmI(email: String): WhoAmIDTO {
+        val user =
+            userService.findUserByEmail(email)
+                ?: throw UserNotFoundException("User by specified email [$email] not found")
+        return WhoAmIDTO(user)
+    }
+
+    fun generateTokensByEmail(email: String): TokenResponseDTO {
+        // load userDetails from database
+        val userDetails = userDetailsService.loadUserByUsername(email)
+        // generate access token
+        val accessToken: String = jwtAccessTokenService.generateToken(userDetails)
+        // generate longer lasting refresh token
+        val refreshToken: String = jwtRefreshTokenService.generateToken(userDetails)
+
+        return TokenResponseDTO(
+            accessToken = accessToken,
+            refreshToken = refreshToken
+        )
+    }
+
+    fun generateTokensFromJwsRefreshToken(jws: String): TokenResponseDTO {
+        // throw exception if token is invalid
+        if (!jwtRefreshTokenService.validateToken(jws))
+            throw BadCredentialsException("Invalid refresh token")
+
+        // fetch userDetails by subject parsed from refresh token
+        val subject = jwtRefreshTokenService.getClaimsFromToken(jws)?.subject
+        val userDetails = userDetailsService.loadUserByUsername(subject)
+
+        // throw if user's account is disabled otherwise return new token
+        if (!userDetails.isEnabled) throw DisabledException("Account disabled")
+
+        return TokenResponseDTO(
+            accessToken = jwtAccessTokenService.generateToken(userDetails),
+            refreshToken = jwtRefreshTokenService.generateToken(userDetails)
+        )
+    }
+}
