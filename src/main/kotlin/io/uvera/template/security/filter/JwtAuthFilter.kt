@@ -26,17 +26,17 @@ class JwtAuthFilter(
     ) {
         // if no token found, continue the filter chain
         val token = request.extractJwtToken() ?: return filterChain.doFilter(request, response)
-        // if token is invalid, throw exception
         try {
-            if (!jwtAccessTokenService.validateToken(token)) throw BadCredentialsException("INVALID_CREDENTIALS")
+            // if token is invalid, throw exception
+            if (!jwtAccessTokenService.validateToken(token)) throw BadCredentialsException("Invalid token")
             // extract email otherwise throw exception (previous validation should be covering this, but just in case)
             val claims =
-                jwtAccessTokenService.getClaimsFromToken(token) ?: throw BadCredentialsException("INVALID_CREDENTIALS")
+                jwtAccessTokenService.getClaimsFromToken(token) ?: throw BadCredentialsException("Invalid token")
             val subject = claims.subject
             val userDetails: UserDetails =
                 userDetailsService.loadUserByUsername(subject)
 
-            if (!userDetails.isEnabled) throw DisabledException("ACCOUNT_DISABLED")
+            if (!userDetails.isEnabled) throw DisabledException("Account disabled")
 
             val usernameAndPasswordAuthenticationToken = UsernamePasswordAuthenticationToken(
                 userDetails, null, userDetails.authorities
