@@ -13,10 +13,12 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
+import org.springframework.security.config.web.servlet.invoke
 import org.springframework.security.crypto.factory.PasswordEncoderFactories
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.CorsConfigurationSource
 
 @Configuration
 @EnableWebSecurity
@@ -39,10 +41,10 @@ class SecurityConfiguration(
     }
 
     override fun configure(http: HttpSecurity) {
-        with(http) {
-            cors().configurationSource {
-                CorsConfiguration()
-                    .apply {
+        http {
+            cors {
+                configurationSource = CorsConfigurationSource {
+                    CorsConfiguration().apply {
                         allowedOrigins = listOf("*")
                         allowedHeaders = listOf("*")
                         allowedMethods = listOf(
@@ -54,21 +56,21 @@ class SecurityConfiguration(
                             HttpMethod.OPTIONS
                         ).map(HttpMethod::toString)
                     }
+                }
             }
-
-            csrf().disable()
-            httpBasic().disable()
-            formLogin().disable()
-            authorizeRequests()
-                .antMatchers(
-                    "/api/auth/**",
-                ).permitAll()
-                .anyRequest().authenticated()
-            exceptionHandling()
-                .authenticationEntryPoint(jwtAuthEntryPoint)
-            sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
+            csrf { disable() }
+            httpBasic { disable() }
+            authorizeRequests {
+                authorize("/api/auth/**", permitAll)
+                authorize(anyRequest, authenticated)
+            }
+            exceptionHandling {
+                authenticationEntryPoint = jwtAuthEntryPoint
+            }
+            sessionManagement {
+                sessionCreationPolicy = SessionCreationPolicy.STATELESS
+            }
+            addFilterBefore<UsernamePasswordAuthenticationFilter>(jwtAuthenticationFilter)
         }
     }
 
