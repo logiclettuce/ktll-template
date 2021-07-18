@@ -60,6 +60,7 @@ class SecurityConfiguration(
             }
             csrf { disable() }
             httpBasic { disable() }
+            logout { disable() }
             authorizeRequests {
                 authorize("/api/auth/**", permitAll)
                 authorize(anyRequest, authenticated)
