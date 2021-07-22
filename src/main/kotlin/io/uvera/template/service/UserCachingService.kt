@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class UserCachingService(
-    private val repo: UserRepository,
+    protected val repo: UserRepository,
 ) {
     @Cacheable(cacheNames = [CacheConfiguration.USER_ENTITY_CACHE_NAME], key = "#email")
     fun findUserByEmail(email: String): User? = repo.findByIdOrNull(email)

@@ -11,8 +11,8 @@ import org.springframework.scheduling.annotation.Scheduled
 @EnableCaching
 @Configuration
 class CacheConfiguration(
-    private val cacheManager: CacheManager,
-    private val loggingCacheProperties: LoggingCacheProperties,
+    protected val cacheManager: CacheManager,
+    protected val loggingCacheProperties: LoggingCacheProperties,
 ) {
     private val logger by loggerDelegate()
 

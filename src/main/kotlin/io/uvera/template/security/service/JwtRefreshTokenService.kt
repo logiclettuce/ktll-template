@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 @Service
 class JwtRefreshTokenService(
     properties: JwtRefreshTokenProperties,
-    private val genericTokenService: GenericTokenService,
+    protected val genericTokenService: GenericTokenService,
 ) : JwtTokenService {
     private val secret = properties.secret
     private val jwtExpirationInMinutesProperty = properties.expirationInMinutes

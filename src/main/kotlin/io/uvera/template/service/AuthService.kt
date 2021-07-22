@@ -12,10 +12,10 @@ import org.springframework.stereotype.Service
 
 @Service
 class AuthService(
-    private val jwtAccessTokenService: JwtAccessTokenService,
-    private val jwtRefreshTokenService: JwtRefreshTokenService,
-    private val userDetailsService: UserDetailsService,
-    private val userService: UserCachingService,
+    protected val jwtAccessTokenService: JwtAccessTokenService,
+    protected val jwtRefreshTokenService: JwtRefreshTokenService,
+    protected val userDetailsService: UserDetailsService,
+    protected val userService: UserCachingService,
 ) {
     fun whoAmI(email: String): WhoAmIDTO {
         val user =
