@@ -28,8 +28,8 @@ import java.security.Principal
 @RestController
 @RequestMapping("/api/auth")
 class AuthController(
-    private val authManager: AuthenticationManager,
-    private val authService: AuthService,
+    protected val authManager: AuthenticationManager,
+    protected val authService: AuthService,
 ) {
 
     //region SwaggerDoc
