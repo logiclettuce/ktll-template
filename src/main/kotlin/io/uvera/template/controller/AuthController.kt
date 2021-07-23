@@ -10,13 +10,13 @@ import io.uvera.template.dto.auth.AuthenticationRequestDTO
 import io.uvera.template.dto.auth.RefreshRequestDTO
 import io.uvera.template.dto.auth.TokenResponseDTO
 import io.uvera.template.dto.auth.WhoAmIDTO
-import io.uvera.template.error.exception.DTOStateException
+import io.uvera.template.error.dto.BindingError
 import io.uvera.template.service.AuthService
+import io.uvera.template.util.AnyResponseEntity
 import org.springframework.http.ResponseEntity
+import org.springframework.http.ResponseEntity.badRequest
 import org.springframework.http.ResponseEntity.ok
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.validation.BindingResult
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
@@ -28,7 +28,6 @@ import java.security.Principal
 @RestController
 @RequestMapping("/api/auth")
 class AuthController(
-    protected val authManager: AuthenticationManager,
     protected val authService: AuthService,
 ) {
 
@@ -54,17 +53,11 @@ class AuthController(
     fun createAuthenticationToken(
         @Validated @RequestBody authenticationRequest: AuthenticationRequestDTO,
         br: BindingResult
-    ): ResponseEntity<TokenResponseDTO> =
-        if (br.hasErrors()) throw DTOStateException("Invalid DTO")
-        else {
-            // authenticate user from request body, will fail with exceptions
-            authManager.authenticate(
-                UsernamePasswordAuthenticationToken(
-                    authenticationRequest.email, authenticationRequest.password
-                )
-            )
-            ok(authService.generateTokensByEmail(authenticationRequest.email))
-        }
+    ): AnyResponseEntity =
+        if (br.hasErrors())
+            badRequest().body(BindingError(br))
+        else
+            ok(authService.authenticate(authenticationRequest))
 
 
     //region SwaggerDoc
@@ -89,9 +82,9 @@ class AuthController(
     fun refreshToken(
         @Validated @RequestBody refreshRequest: RefreshRequestDTO,
         br: BindingResult
-    ): ResponseEntity<TokenResponseDTO> =
+    ): AnyResponseEntity =
         if (br.hasErrors())
-            throw DTOStateException("Invalid DTO")
+            badRequest().body(BindingError(br))
         else
             ok(authService.generateTokensFromJwsRefreshToken(refreshRequest.token))
 

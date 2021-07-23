@@ -9,7 +9,7 @@ import java.time.LocalDateTime
 
 class BindingError(
     val errors: Collection<ObjectErrorCompact>,
-    @Schema(implementation = ObjectErrorCompact::class)
+    @Schema(implementation = ObjectErrorCompact::class, nullable = true)
     val firstError: Any = errors.firstOrNull() ?: EmptyObject,
     @Schema(implementation = LocalDateTime::class)
     val timestamp: String = LocalDateTime.now().toString(),

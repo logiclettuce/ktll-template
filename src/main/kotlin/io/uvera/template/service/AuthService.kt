@@ -1,12 +1,15 @@
 package io.uvera.template.service
 
+import io.uvera.template.dto.auth.AuthenticationRequestDTO
 import io.uvera.template.dto.auth.TokenResponseDTO
 import io.uvera.template.dto.auth.WhoAmIDTO
 import io.uvera.template.error.exception.UserNotFoundException
 import io.uvera.template.security.service.JwtAccessTokenService
 import io.uvera.template.security.service.JwtRefreshTokenService
+import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.DisabledException
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Service
 
@@ -16,12 +19,24 @@ class AuthService(
     protected val jwtRefreshTokenService: JwtRefreshTokenService,
     protected val userDetailsService: UserDetailsService,
     protected val userService: UserCachingService,
+    protected val authManager: AuthenticationManager,
 ) {
     fun whoAmI(email: String): WhoAmIDTO {
         val user =
             userService.findUserByEmail(email)
                 ?: throw UserNotFoundException("User by specified email [$email] not found")
         return WhoAmIDTO(user)
+    }
+
+    fun authenticate(dto: AuthenticationRequestDTO) = authenticate(dto.email, dto.password)
+    fun authenticate(email: String, password: String): TokenResponseDTO {
+        // throws exception if failed
+        authManager.authenticate(
+            UsernamePasswordAuthenticationToken(
+                email, password
+            )
+        )
+        return generateTokensByEmail(email)
     }
 
     fun generateTokensByEmail(email: String): TokenResponseDTO {
