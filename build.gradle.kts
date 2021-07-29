@@ -69,7 +69,8 @@ val bootJarTask = tasks.bootJar.get()
 val archivePath = bootJarTask.archiveFileName.get()
 val dockerFilePath = "${projectDir.path}/docker/Dockerfile"
 val appName = project.name
-val fullName = "${project.group}/${appName}:${project.version}"
+val projectName = "${project.group}/${appName}"
+val fullName = "$projectName:${project.version}"
 val dockerBuildArgs = mapOf(
     "JAR_FILE" to archivePath
 )
@@ -85,7 +86,7 @@ docker {
     printInfo("with app name: $appName")
     printInfo("with full name: $fullName")
     name = fullName
-    tag("latest", "latest")
+    tag("latest", "$projectName:latest")
     pull(true)
     printInfo("with Dockerfile: $dockerFilePath")
     setDockerfile(file(dockerFilePath))
