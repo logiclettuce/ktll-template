@@ -1,7 +1,7 @@
 package io.uvera.template.security.configuration
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import io.uvera.template.error.dto.BindingError
+import io.uvera.template.error.dto.ApiError
 import org.springframework.http.MediaType
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.web.AuthenticationEntryPoint
@@ -22,7 +22,7 @@ class JwtAuthEntryPoint : AuthenticationEntryPoint {
         val ex = request.getAttribute("exception") as? Exception ?: authException
 
         val body: ByteArray = ObjectMapper().writeValueAsBytes(
-            BindingError(ex)
+            ApiError.fromException(ex)
         )
 
         response.outputStream.write(body)

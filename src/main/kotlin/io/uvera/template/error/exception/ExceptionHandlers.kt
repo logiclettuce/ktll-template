@@ -1,6 +1,6 @@
 package io.uvera.template.error.exception
 
-import io.uvera.template.error.dto.BindingError
+import io.uvera.template.error.dto.ApiError
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -11,7 +11,7 @@ import javax.naming.AuthenticationException
 @RestControllerAdvice
 class ExceptionHandlers {
     private fun exceptionEntity(ex: Exception, status: HttpStatus) =
-        ResponseEntity<BindingError>(BindingError(ex), status)
+        ResponseEntity<ApiError>(ApiError.fromException(ex), status)
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BadRequestException::class)

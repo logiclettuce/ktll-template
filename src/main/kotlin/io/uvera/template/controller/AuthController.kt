@@ -10,7 +10,7 @@ import io.uvera.template.dto.auth.AuthenticationRequestDTO
 import io.uvera.template.dto.auth.RefreshRequestDTO
 import io.uvera.template.dto.auth.TokenResponseDTO
 import io.uvera.template.dto.auth.WhoAmIDTO
-import io.uvera.template.error.dto.BindingError
+import io.uvera.template.error.dto.ApiError
 import io.uvera.template.service.AuthService
 import io.uvera.template.util.AnyResponseEntity
 import org.springframework.http.ResponseEntity
@@ -55,7 +55,7 @@ class AuthController(
         br: BindingResult
     ): AnyResponseEntity =
         if (br.hasErrors())
-            badRequest().body(BindingError(br))
+            badRequest().body(ApiError.fromBindingResult(br))
         else
             ok(authService.authenticate(authenticationRequest))
 
@@ -84,7 +84,7 @@ class AuthController(
         br: BindingResult
     ): AnyResponseEntity =
         if (br.hasErrors())
-            badRequest().body(BindingError(br))
+            badRequest().body(ApiError.fromBindingResult(br))
         else
             ok(authService.generateTokensFromJwsRefreshToken(refreshRequest.token))
 
