@@ -1,17 +1,22 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.springframework.boot") version "2.5.2"
-    id("io.spring.dependency-management") version "1.0.11.RELEASE"
-    kotlin("jvm") version "1.5.20"
-    kotlin("plugin.spring") version "1.5.20"
-    kotlin("plugin.jpa") version "1.5.20"
+    val kotlinVersion = "1.5.21"
+    val palantirDockerVersion = "0.27.0"
+    val springBootVersion = "2.5.3"
+    val dependencyManagementVersion = "1.0.11.RELEASE"
 
-    id("com.palantir.docker") version "0.27.0"
+    id("org.springframework.boot") version springBootVersion
+    id("io.spring.dependency-management") version dependencyManagementVersion
+    kotlin("jvm") version kotlinVersion
+    kotlin("plugin.spring") version kotlinVersion
+    kotlin("plugin.jpa") version kotlinVersion
+
+    id("com.palantir.docker") version palantirDockerVersion
 }
 
 group = "io.uvera"
-version = "0.0.1"
+version = "0.0.2"
 java.sourceCompatibility = JavaVersion.VERSION_16
 
 configurations {
