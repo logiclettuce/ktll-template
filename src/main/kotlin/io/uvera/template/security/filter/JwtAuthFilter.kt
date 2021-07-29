@@ -13,6 +13,11 @@ import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
+/**
+ * Custom JWT Authentication filter
+ *
+ * Custom implementation which parses Bearer token from Authorization header
+ */
 @Component
 class JwtAuthFilter(
     private val jwtAccessTokenService: JwtAccessTokenService,
@@ -22,7 +27,7 @@ class JwtAuthFilter(
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
-        filterChain: FilterChain
+        filterChain: FilterChain,
     ) {
         // if no token found, continue the filter chain
         val token = request.extractJwtToken() ?: return filterChain.doFilter(request, response)
@@ -32,10 +37,9 @@ class JwtAuthFilter(
             // extract email otherwise throw exception (previous validation should be covering this, but just in case)
             val claims =
                 jwtAccessTokenService.getClaimsFromToken(token) ?: throw BadCredentialsException("Invalid token")
-            val subject = claims.subject
-            val userDetails: UserDetails =
-                userDetailsService.loadUserByUsername(subject)
 
+            val userDetails: UserDetails = userDetailsService.loadUserByUsername(claims.subject)
+           
             if (!userDetails.isEnabled) throw DisabledException("Account disabled")
 
             val usernameAndPasswordAuthenticationToken = UsernamePasswordAuthenticationToken(
@@ -43,6 +47,10 @@ class JwtAuthFilter(
             )
             SecurityContextHolder.getContext().authentication = usernameAndPasswordAuthenticationToken
         } catch (ex: Exception) {
+            /**
+             * Setting attribute so that [io.uvera.template.security.configuration.JwtAuthEntryPoint]
+             * can proceed with error handling
+             */
             request.setAttribute("exception", ex)
         }
         filterChain.doFilter(request, response)

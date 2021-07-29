@@ -11,8 +11,20 @@ interface JwtTokenService {
     fun getClaimsFromToken(token: String): Claims?
 }
 
+/**
+ * Generic implementation for JWT handling
+ */
 @Service
 class GenericTokenService {
+    /**
+     * Generates token from [userDetails] using [secret] [String]
+     *
+     * @param userDetails instance of [UserDetails] implementation
+     * @param expirationInMinutes expiration in minutes as [Int]
+     * @param secret secret used for signing the JWT
+     *
+     * @return generated token [String]
+     */
     fun generateToken(userDetails: UserDetails, expirationInMinutes: Int, secret: String): String {
         val subject = userDetails.username
         val claims = mutableMapOf<String, Any>()
@@ -38,6 +50,10 @@ class GenericTokenService {
             .compact()
     }
 
+    /**
+     * Validates [token] against [secret]
+     * @return [Boolean] indicating if validation passed
+     */
     fun validateToken(token: String, secret: String): Boolean = try {
         Jwts.parser()
             .setSigningKey(secret)
@@ -55,6 +71,10 @@ class GenericTokenService {
         false
     }
 
+    /**
+     * Parses claims from tokens
+     * @return nullable instance of [Claims]
+     */
     fun getClaimsFromToken(token: String, secret: String): Claims? = try {
         Jwts.parser()
             .setSigningKey(secret)

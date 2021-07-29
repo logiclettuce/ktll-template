@@ -8,6 +8,15 @@ import org.springframework.validation.BindingResult
 import java.time.LocalDateTime
 
 
+/**
+ * Class representing error returned from this API.
+ *
+ * This class is used for serializing into json format representing error DTO.
+ *
+ * @property errors Collection representing multiple errors that occurred during request parsing.
+ * @property firstError Property representing first error from [errors].
+ * @property timestamp Property representing timestamp when error occurred.
+ */
 class ApiError(
     @ArraySchema(schema = Schema(implementation = ObjectErrorCompact::class, nullable = false))
     val errors: Collection<ObjectErrorCompact>,
@@ -16,7 +25,15 @@ class ApiError(
     @Schema(implementation = LocalDateTime::class)
     val timestamp: String = LocalDateTime.now().toString(),
 ) {
+    /**
+     * [Companion] object of [ApiError] holding helper methods.
+     */
     companion object {
+        /**
+         * Convert a [Exception] to instance of [ApiError].
+         *
+         * @return ApiError instance.
+         */
         fun fromException(ex: Exception) = ApiError(
             errors = listOf(
                 ObjectErrorCompact(
@@ -26,6 +43,11 @@ class ApiError(
             )
         )
 
+        /**
+         * Convert a [BindingResult] to instance of [ApiError].
+         *
+         * @return ApiError instance.
+         */
         fun fromBindingResult(br: BindingResult) = ApiError(
             errors = br.allErrors.compact
         )
