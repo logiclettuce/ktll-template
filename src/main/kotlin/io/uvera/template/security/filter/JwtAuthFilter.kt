@@ -1,6 +1,6 @@
 package io.uvera.template.security.filter
 
-import io.uvera.template.security.service.JwtAccessTokenService
+import io.uvera.template.security.service.JwtAccessService
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.DisabledException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse
  */
 @Component
 class JwtAuthFilter(
-    private val jwtAccessTokenService: JwtAccessTokenService,
+    private val jwtAccessService: JwtAccessService,
     private val userDetailsService: UserDetailsService,
 ) : OncePerRequestFilter() {
 
@@ -33,10 +33,10 @@ class JwtAuthFilter(
         val token = request.extractJwt() ?: return filterChain.doFilter(request, response)
         try {
             // if token is invalid, throw exception
-            if (!jwtAccessTokenService.validateToken(token)) throw BadCredentialsException("Invalid token")
+            if (!jwtAccessService.validateToken(token)) throw BadCredentialsException("Invalid token")
             // extract email otherwise throw exception (previous validation should be covering this, but just in case)
             val claims =
-                jwtAccessTokenService.getClaimsFromToken(token) ?: throw BadCredentialsException("Invalid token")
+                jwtAccessService.getClaimsFromToken(token) ?: throw BadCredentialsException("Invalid token")
 
             val userDetails: UserDetails = userDetailsService.loadUserByUsername(claims.subject)
            

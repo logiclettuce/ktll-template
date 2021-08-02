@@ -5,7 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
 import java.util.*
 
-interface JwtTokenService {
+interface JwtService {
     fun generateToken(userDetails: UserDetails): String
     fun validateToken(token: String): Boolean
     fun getClaimsFromToken(token: String): Claims?

@@ -11,7 +11,7 @@ import io.uvera.template.dto.auth.RefreshRequestDTO
 import io.uvera.template.dto.auth.TokenResponseDTO
 import io.uvera.template.dto.auth.WhoAmIDTO
 import io.uvera.template.error.dto.ApiError
-import io.uvera.template.service.AuthService
+import io.uvera.template.service.auth.AuthService
 import io.uvera.template.util.AnyResponseEntity
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.badRequest

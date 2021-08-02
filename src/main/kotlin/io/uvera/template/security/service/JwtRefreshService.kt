@@ -6,10 +6,10 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
 
 @Service
-class JwtRefreshTokenService(
+class JwtRefreshService(
     properties: JwtRefreshTokenProperties,
     protected val genericTokenService: GenericTokenService,
-) : JwtTokenService {
+) : JwtService {
     private val secret = properties.secret
     private val jwtExpirationInMinutesProperty = properties.expirationInMinutes
 
