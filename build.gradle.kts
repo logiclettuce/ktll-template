@@ -75,23 +75,17 @@ val dockerBuildArgs = mapOf(
     "JAR_FILE" to archivePath
 )
 
-fun printInfo(string: String) = println("[Docker plugin]: $string")
-
 // workaround from https://github.com/palantir/gradle-docker/issues/413
 tasks.docker {
     inputs.file(dockerFilePath)
 }
 
 docker {
-    printInfo("with app name: $appName")
-    printInfo("with full name: $fullName")
     name = fullName
     tag("latest", "$projectName:latest")
     pull(true)
-    printInfo("with Dockerfile: $dockerFilePath")
     setDockerfile(file(dockerFilePath))
     files(bootJarTask.outputs)
-    printInfo("with archive: $archivePath")
     buildArgs(dockerBuildArgs)
 }
 
