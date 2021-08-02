@@ -68,7 +68,7 @@ tasks.withType<Test> {
 val bootJarTask = tasks.bootJar.get()
 val archivePath = bootJarTask.archiveFileName.get()
 val dockerFilePath = "${projectDir.path}/docker/Dockerfile"
-val appName = project.name
+val appName = project.name.toLowerCase()
 val projectName = "${project.group}/${appName}"
 val fullName = "$projectName:${project.version}"
 val dockerBuildArgs = mapOf(
