@@ -30,7 +30,7 @@ class JwtAuthFilter(
         filterChain: FilterChain,
     ) {
         // if no token found, continue the filter chain
-        val token = request.extractJwtToken() ?: return filterChain.doFilter(request, response)
+        val token = request.extractJwt() ?: return filterChain.doFilter(request, response)
         try {
             // if token is invalid, throw exception
             if (!jwtAccessTokenService.validateToken(token)) throw BadCredentialsException("Invalid token")
@@ -57,7 +57,7 @@ class JwtAuthFilter(
     }
 }
 
-private fun HttpServletRequest.extractJwtToken(): String? {
+private fun HttpServletRequest.extractJwt(): String? {
     // Return null if authorization header is null
     val authorizationHeader: String = this.getHeader("Authorization") ?: return null
     // We need to check if header is in Bearer {token} form
