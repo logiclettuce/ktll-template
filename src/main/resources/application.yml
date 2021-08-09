@@ -1,0 +1,22 @@
+server:
+  tomcat:
+    relaxed-path-chars: ["|", "[", "]", "{", "}"]
+  forward-headers-strategy: native
+app:
+  jwt:
+    token:
+      access:
+        secret: SecretForAccessToken
+        expiration-in-minutes: 1440
+      refresh:
+        secret: SecretForRefreshToken
+        expiration-in-minutes: 44640
+spring:
+  datasource:
+    url: "jdbc:postgresql://localhost:5445/postgres"
+    password: postgres
+    username: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
