@@ -1,7 +1,6 @@
 package io.uvera.template.security.configuration
 
-import io.uvera.template.model.User
-import io.uvera.template.model.UserRole
+import io.uvera.template.dao.user.User
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
@@ -11,7 +10,7 @@ class CustomUserDetails(user: User) : UserDetails {
     private val password: String = user.password
     private val active = user.active
     private val authorities: MutableList<GrantedAuthority> = user.roleList
-        .map { role -> SimpleGrantedAuthority("${UserRole.ROLE_PREFIX_VALUE}$role") }
+        .map { role -> SimpleGrantedAuthority("${RoleEnum.ROLE_PREFIX_VALUE}$role") }
         .toMutableList()
 
     override fun getUsername(): String = this.email

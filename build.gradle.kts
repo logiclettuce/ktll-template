@@ -10,7 +10,6 @@ plugins {
     id("io.spring.dependency-management") version dependencyManagementVersion
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.spring") version kotlinVersion
-    kotlin("plugin.jpa") version kotlinVersion
 
     id("com.palantir.docker") version palantirDockerVersion
 }
@@ -30,7 +29,9 @@ repositories {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    val jdbiVersion = "3.21.0"
+
+    implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-web")
@@ -39,6 +40,12 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.liquibase:liquibase-core")
+    implementation("org.jdbi:jdbi3-core:${jdbiVersion}")
+    implementation("org.jdbi:jdbi3-postgres:${jdbiVersion}")
+    implementation("org.jdbi:jdbi3-sqlobject:${jdbiVersion}")
+    implementation("org.jdbi:jdbi3-kotlin:${jdbiVersion}")
+    implementation("org.jdbi:jdbi3-kotlin-sqlobject:${jdbiVersion}")
+    implementation("org.jdbi:jdbi3-stringtemplate4:${jdbiVersion}")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("org.postgresql:postgresql")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")

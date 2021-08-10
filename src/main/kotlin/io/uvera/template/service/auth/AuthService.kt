@@ -26,7 +26,7 @@ class AuthService(
         val user =
             userService.findUserByEmail(email)
                 ?: throw UserNotFoundException("User by specified email [$email] not found")
-        return WhoAmIDTO(user)
+        return WhoAmIDTO.fromUser(user)
     }
 
     fun authenticate(dto: AuthenticationRequestDTO) = authenticate(dto.email, dto.password)
