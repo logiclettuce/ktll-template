@@ -19,6 +19,7 @@ interface UserDao {
             u.password as u_password,
             u.active as u_active,
             ur.role as ur_role,
+            ur.user_id as ur_id
             from users u left join users_roles ur
             on u.id = ur.user_id
             where u.email = :email
