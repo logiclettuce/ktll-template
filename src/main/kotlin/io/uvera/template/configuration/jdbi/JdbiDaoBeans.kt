@@ -1,6 +1,6 @@
 package io.uvera.template.configuration.jdbi
 
-import io.uvera.template.dao.user.UserDao
+import io.uvera.template.common.dao.user.UserDao
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.sqlobject.kotlin.onDemand
 import org.springframework.context.annotation.Bean

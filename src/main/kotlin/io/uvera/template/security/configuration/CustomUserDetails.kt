@@ -1,6 +1,6 @@
 package io.uvera.template.security.configuration
 
-import io.uvera.template.dao.user.User
+import io.uvera.template.common.dao.user.User
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails

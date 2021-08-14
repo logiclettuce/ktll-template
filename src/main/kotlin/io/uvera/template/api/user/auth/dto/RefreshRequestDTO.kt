@@ -1,4 +1,4 @@
-package io.uvera.template.dto.auth
+package io.uvera.template.api.user.auth.dto
 
 import javax.validation.constraints.NotBlank
 

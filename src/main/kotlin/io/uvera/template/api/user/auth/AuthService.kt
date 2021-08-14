@@ -1,12 +1,11 @@
-package io.uvera.template.service.auth
+package io.uvera.template.api.user.auth
 
-import io.uvera.template.dto.auth.AuthenticationRequestDTO
-import io.uvera.template.dto.auth.TokenResponseDTO
-import io.uvera.template.dto.auth.WhoAmIDTO
+import io.uvera.template.api.user.auth.dto.AuthenticationRequestDTO
+import io.uvera.template.api.user.auth.dto.TokenResponseDTO
+import io.uvera.template.api.user.auth.dto.WhoAmIDTO
 import io.uvera.template.error.exception.UserNotFoundException
 import io.uvera.template.security.service.JwtAccessService
 import io.uvera.template.security.service.JwtRefreshService
-import io.uvera.template.service.UserCachingService
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.DisabledException

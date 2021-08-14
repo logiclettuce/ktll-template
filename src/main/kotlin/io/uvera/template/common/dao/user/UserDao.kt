@@ -1,13 +1,12 @@
 @file:JvmName("UserDao")
 
-package io.uvera.template.dao.user
+package io.uvera.template.common.dao.user
 
 import org.jdbi.v3.sqlobject.config.RegisterColumnMapper
 import org.jdbi.v3.sqlobject.config.RegisterConstructorMapper
 import org.jdbi.v3.sqlobject.customizer.Bind
 import org.jdbi.v3.sqlobject.statement.SqlQuery
 import org.jdbi.v3.sqlobject.statement.UseRowReducer
-import org.springframework.context.annotation.Configuration
 
 interface UserDao {
     @RegisterConstructorMapper(value = User::class, prefix = "u")

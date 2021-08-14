@@ -1,10 +1,8 @@
 package io.uvera.template.security.service
 
-import io.uvera.template.dao.user.UserDao
+import io.uvera.template.common.dao.user.UserDao
 import io.uvera.template.security.configuration.CustomUserDetails
-import io.uvera.template.util.loggerDelegate
 import org.springframework.context.annotation.Primary
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException

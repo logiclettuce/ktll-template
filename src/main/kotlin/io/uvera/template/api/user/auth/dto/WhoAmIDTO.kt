@@ -1,6 +1,6 @@
-package io.uvera.template.dto.auth
+package io.uvera.template.api.user.auth.dto
 
-import io.uvera.template.dao.user.User
+import io.uvera.template.common.dao.user.User
 import io.uvera.template.security.configuration.RoleEnum
 
 class WhoAmIDTO(val email: String, val roles: List<String>) {

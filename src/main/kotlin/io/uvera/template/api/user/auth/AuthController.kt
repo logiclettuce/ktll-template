@@ -1,4 +1,4 @@
-package io.uvera.template.controller.auth
+package io.uvera.template.api.user.auth
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
@@ -6,12 +6,11 @@ import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
-import io.uvera.template.dto.auth.AuthenticationRequestDTO
-import io.uvera.template.dto.auth.RefreshRequestDTO
-import io.uvera.template.dto.auth.TokenResponseDTO
-import io.uvera.template.dto.auth.WhoAmIDTO
+import io.uvera.template.api.user.auth.dto.AuthenticationRequestDTO
+import io.uvera.template.api.user.auth.dto.RefreshRequestDTO
+import io.uvera.template.api.user.auth.dto.TokenResponseDTO
+import io.uvera.template.api.user.auth.dto.WhoAmIDTO
 import io.uvera.template.error.dto.ApiError
-import io.uvera.template.service.auth.AuthService
 import io.uvera.template.util.AnyResponseEntity
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.badRequest

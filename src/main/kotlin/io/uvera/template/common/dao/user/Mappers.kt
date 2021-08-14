@@ -1,4 +1,4 @@
-package io.uvera.template.dao.user
+package io.uvera.template.common.dao.user
 
 import io.uvera.template.security.configuration.RoleEnum
 import io.uvera.template.util.extensions.getColumn
