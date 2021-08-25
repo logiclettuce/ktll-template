@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     val kotlinVersion = "1.5.30"
-    val palantirDockerVersion = "0.27.0"
+    val palantirDockerVersion = "0.28.0"
     val springBootVersion = "2.5.4"
     val dependencyManagementVersion = "1.0.11.RELEASE"
 
