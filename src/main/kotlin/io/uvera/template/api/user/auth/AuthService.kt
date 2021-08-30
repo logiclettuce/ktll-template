@@ -6,6 +6,7 @@ import io.uvera.template.api.user.auth.dto.WhoAmIDTO
 import io.uvera.template.error.exception.UserNotFoundException
 import io.uvera.template.security.service.JwtAccessService
 import io.uvera.template.security.service.JwtRefreshService
+import io.uvera.template.util.principalDelegate
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.DisabledException
@@ -21,7 +22,9 @@ class AuthService(
     protected val userService: UserCachingService,
     protected val authManager: AuthenticationManager,
 ) {
-    fun whoAmI(email: String): WhoAmIDTO {
+    fun whoAmI(): WhoAmIDTO {
+        val principal by principalDelegate()
+        val email = principal.email
         val user =
             userService.findUserByEmail(email)
                 ?: throw UserNotFoundException("User by specified email [$email] not found")

@@ -6,7 +6,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
 class CustomUserDetails(user: User) : UserDetails {
-    private val email: String = user.email
+    val email: String = user.email
     private val password: String = user.password
     private val active = user.active
     private val authorities: MutableList<GrantedAuthority> = user.roleList

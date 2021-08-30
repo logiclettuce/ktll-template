@@ -105,7 +105,7 @@ class AuthController(
     //endregion
     @PreAuthorize("authenticated")
     @GetMapping("/whoami")
-    fun whoAmI(principal: Principal): ResponseEntity<WhoAmIDTO> =
-        ok(authService.whoAmI(principal.name))
+    fun whoAmI(): ResponseEntity<WhoAmIDTO> =
+        ok(authService.whoAmI())
 
 }
