@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package io.uvera.template.util
 
 import io.uvera.template.security.configuration.CustomUserDetails

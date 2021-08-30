@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package io.uvera.template.util.extensions
 
 import org.springframework.cache.CacheManager
