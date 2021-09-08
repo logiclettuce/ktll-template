@@ -1,6 +1,4 @@
 server:
-  tomcat:
-    relaxed-path-chars: ["|", "[", "]", "{", "}"]
   forward-headers-strategy: native
 app:
   jwt:
