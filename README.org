@@ -5,8 +5,8 @@
 - Liquibase integrated with Postgres database
 - Spring cache setup
 ** Project Configuration
-- Spring Boot 2.5.2
-- Kotlin 1.5.20
+- Spring Boot 2.5.4
+- Kotlin 1.5.30
 - Java 16
 ** Starters
 #+BEGIN_SRC kotlin
