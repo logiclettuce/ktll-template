@@ -1,9 +1,9 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    val kotlinVersion = "1.5.30"
-    val palantirDockerVersion = "0.28.0"
-    val springBootVersion = "2.5.4"
+    val kotlinVersion = "1.5.31"
+    val palantirDockerVersion = "0.30.0"
+    val springBootVersion = "2.5.5"
     val dependencyManagementVersion = "1.0.11.RELEASE"
 
     id("org.springframework.boot") version springBootVersion
@@ -15,8 +15,8 @@ plugins {
 }
 
 group = "io.uvera"
-version = "0.0.3"
-java.sourceCompatibility = JavaVersion.VERSION_16
+version = "0.1.0"
+java.sourceCompatibility = JavaVersion.VERSION_17
 
 configurations {
     all {
@@ -33,7 +33,7 @@ repositories {
 }
 
 dependencies {
-    val jdbiVersion = "3.21.0"
+    val jdbiVersion = "3.23.0"
 
     implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-security")
@@ -56,8 +56,11 @@ dependencies {
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
-    // jwt
-    implementation("io.jsonwebtoken:jjwt:0.9.1")
+    // region jwt
+    implementation("io.jsonwebtoken:jjwt-api:0.11.2")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.2")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.2")
+    // endregion jwt
     // spring doc
     implementation("org.springdoc:springdoc-openapi-ui:1.5.+")
     implementation("org.springdoc:springdoc-openapi-data-rest:1.5.+")
