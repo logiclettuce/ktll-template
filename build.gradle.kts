@@ -1,17 +1,11 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    val kotlinVersion = "1.5.31"
-    val palantirDockerVersion = "0.30.0"
-    val springBootVersion = "2.5.5"
-    val dependencyManagementVersion = "1.0.11.RELEASE"
-
-    id("org.springframework.boot") version springBootVersion
-    id("io.spring.dependency-management") version dependencyManagementVersion
-    kotlin("jvm") version kotlinVersion
-    kotlin("plugin.spring") version kotlinVersion
-
-    id("com.palantir.docker") version palantirDockerVersion
+    id("org.springframework.boot")
+    id("io.spring.dependency-management")
+    kotlin("jvm")
+    kotlin("plugin.spring")
+    id("com.palantir.docker")
 }
 
 group = "io.uvera"
@@ -32,8 +26,11 @@ repositories {
     mavenCentral()
 }
 
+val jdbiVersion: String by project
+val jjwtVersion: String by project
+val springDocVersion: String by project
+
 dependencies {
-    val jdbiVersion = "3.23.0"
 
     implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-security")
@@ -45,26 +42,26 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.liquibase:liquibase-core")
-    implementation("org.jdbi:jdbi3-core:${jdbiVersion}")
-    implementation("org.jdbi:jdbi3-postgres:${jdbiVersion}")
-    implementation("org.jdbi:jdbi3-sqlobject:${jdbiVersion}")
-    implementation("org.jdbi:jdbi3-kotlin:${jdbiVersion}")
-    implementation("org.jdbi:jdbi3-kotlin-sqlobject:${jdbiVersion}")
-    implementation("org.jdbi:jdbi3-stringtemplate4:${jdbiVersion}")
+    implementation("org.jdbi:jdbi3-core:$jdbiVersion")
+    implementation("org.jdbi:jdbi3-postgres:$jdbiVersion")
+    implementation("org.jdbi:jdbi3-sqlobject:$jdbiVersion")
+    implementation("org.jdbi:jdbi3-kotlin:$jdbiVersion")
+    implementation("org.jdbi:jdbi3-kotlin-sqlobject:$jdbiVersion")
+    implementation("org.jdbi:jdbi3-stringtemplate4:$jdbiVersion")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("org.postgresql:postgresql")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
     // region jwt
-    implementation("io.jsonwebtoken:jjwt-api:0.11.2")
-    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.2")
-    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.2")
+    implementation("io.jsonwebtoken:jjwt-api:$jjwtVersion")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:$jjwtVersion")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:$jjwtVersion")
     // endregion jwt
     // spring doc
-    implementation("org.springdoc:springdoc-openapi-ui:1.5.+")
-    implementation("org.springdoc:springdoc-openapi-data-rest:1.5.+")
-    implementation("org.springdoc:springdoc-openapi-kotlin:1.5.+")
+    implementation("org.springdoc:springdoc-openapi-ui:$springDocVersion")
+    implementation("org.springdoc:springdoc-openapi-data-rest:$springDocVersion")
+    implementation("org.springdoc:springdoc-openapi-kotlin:$springDocVersion")
 }
 
 tasks.withType<KotlinCompile> {
