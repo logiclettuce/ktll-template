@@ -5,16 +5,18 @@
 - Liquibase integrated with Postgres database
 - Spring cache setup
 ** Project Configuration
-- Spring Boot 2.5.4
-- Kotlin 1.5.30
-- Java 16
+- Spring Boot 2.5.5
+- Kotlin 1.5.31
+- Java 17
 ** Starters
 #+BEGIN_SRC kotlin
     implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-undertow")
     implementation("org.springframework.boot:spring-boot-starter-cache")
+
 #+END_SRC
 ** Other dependencies
 #+BEGIN_SRC kotlin
@@ -22,21 +24,25 @@
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.liquibase:liquibase-core")
-    implementation("org.jdbi:jdbi3-core:${jdbiVersion}")
-    implementation("org.jdbi:jdbi3-postgres:${jdbiVersion}")
-    implementation("org.jdbi:jdbi3-sqlobject:${jdbiVersion}")
-    implementation("org.jdbi:jdbi3-kotlin:${jdbiVersion}")
-    implementation("org.jdbi:jdbi3-kotlin-sqlobject:${jdbiVersion}")
-    implementation("org.jdbi:jdbi3-stringtemplate4:${jdbiVersion}")
+    implementation("org.jdbi:jdbi3-core")
+    implementation("org.jdbi:jdbi3-postgres")
+    implementation("org.jdbi:jdbi3-sqlobject")
+    implementation("org.jdbi:jdbi3-kotlin")
+    implementation("org.jdbi:jdbi3-kotlin-sqlobject")
+    implementation("org.jdbi:jdbi3-stringtemplate4")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("org.postgresql:postgresql")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
-    // jwt
-    implementation("io.jsonwebtoken:jjwt:0.9.1")
+    // region jwt
+    implementation("io.jsonwebtoken:jjwt-api")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson")
+    // endregion jwt
     // spring doc
-    implementation("org.springdoc:springdoc-openapi-ui:1.5.+")
-    implementation("org.springdoc:springdoc-openapi-data-rest:1.5.+")
-    implementation("org.springdoc:springdoc-openapi-kotlin:1.5.+")
+    implementation("org.springdoc:springdoc-openapi-ui")
+    implementation("org.springdoc:springdoc-openapi-data-rest")
+    implementation("org.springdoc:springdoc-openapi-kotlin")
+
 #+END_SRC
