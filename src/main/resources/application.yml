@@ -11,7 +11,7 @@ app:
         expiration-in-minutes: 44640
 spring:
   datasource:
-    url: "jdbc:postgresql://localhost:5445/postgres"
+    url: "jdbc:postgresql://localhost:5432/postgres"
     password: postgres
     username: postgres
     driver-class-name: org.postgresql.Driver

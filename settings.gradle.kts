@@ -1,4 +1,4 @@
-rootProject.name = "spring-boot-kotlin-template"
+rootProject.name = "template"
 
 pluginManagement {
     val kotlinVersion: String by settings
