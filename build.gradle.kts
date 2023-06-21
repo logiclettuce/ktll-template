@@ -14,8 +14,8 @@ plugins {
 }
 
 group = "org.logiclettuce"
-version = "0.1.0"
-java.sourceCompatibility = JavaVersion.VERSION_16
+version = "1.0.0"
+java.sourceCompatibility = JavaVersion.VERSION_17
 
 
 configurations {
@@ -42,6 +42,7 @@ val pgPassword: String by project
 dependencies {
 
     implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-web")
@@ -156,7 +157,7 @@ jooq {
                     }
                     target.apply {
                         packageName = "${group}.database"
-                        directory = "build/generated-src/jooq/main"  // default (can be omitted)
+                        directory = "src/main/java/"  // default (can be omitted)
                     }
                     strategy.name = "org.jooq.codegen.DefaultGeneratorStrategy"
                 }
